@@ -57,15 +57,11 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       httpOnly: true,
       maxAge: 72 * 60 * 60 * 1000,
     });
-    res.json({
-      _id: findUser?._id,
-      firstname: findUser?.firstname,
-      lastname: findUser?.lastname,
-      email: findUser?.email,
-      mobile: findUser?.mobile,
-      role: findUser?.role,
+    res.status(200).json({
+      user: findUser,
       token: generateToken(findUser?._id),
-    });
+      message: "User Logged In",
+    }); // generate token
   } else {
     throw new Error("Invalid Credentials");
   }
@@ -91,13 +87,10 @@ const loginAdmin = asyncHandler(async (req, res) => {
       httpOnly: true,
       maxAge: 72 * 60 * 60 * 1000,
     });
-    res.json({
-      _id: findAdmin?._id,
-      firstname: findAdmin?.firstname,
-      lastname: findAdmin?.lastname,
-      email: findAdmin?.email,
-      mobile: findAdmin?.mobile,
+    res.status(200).json({
+      user: findAdmin,
       token: generateToken(findAdmin?._id),
+      message: "User Logged In",
     });
   } else {
     throw new Error("Invalid Credentials");
