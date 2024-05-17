@@ -5,7 +5,7 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const createEnquiry = asyncHandler(async (req, res) => {
   try {
     const newEnquiry = await Enquiry.create(req.body);
-    res.json(newEnquiry);
+    res.status(200).json(newEnquiry);
   } catch (error) {
     throw new Error(error);
   }
@@ -17,7 +17,7 @@ const updateEnquiry = asyncHandler(async (req, res) => {
     const updatedEnquiry = await Enquiry.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.json(updatedEnquiry);
+    res.status(200).json(updatedEnquiry);
   } catch (error) {
     throw new Error(error);
   }
@@ -27,7 +27,7 @@ const deleteEnquiry = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const deletedEnquiry = await Enquiry.findByIdAndDelete(id);
-    res.json(deletedEnquiry);
+    res.status(200).json(deletedEnquiry);
   } catch (error) {
     throw new Error(error);
   }
@@ -37,7 +37,7 @@ const getEnquiry = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const getaEnquiry = await Enquiry.findById(id);
-    res.json(getaEnquiry);
+    res.status(200).json(getaEnquiry);
   } catch (error) {
     throw new Error(error);
   }
@@ -45,7 +45,7 @@ const getEnquiry = asyncHandler(async (req, res) => {
 const getallEnquiry = asyncHandler(async (req, res) => {
   try {
     const getallEnquiry = await Enquiry.find();
-    res.json(getallEnquiry);
+    res.status(200).json(getallEnquiry);
   } catch (error) {
     throw new Error(error);
   }

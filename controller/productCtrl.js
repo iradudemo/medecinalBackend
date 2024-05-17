@@ -10,7 +10,7 @@ const createProduct = asyncHandler(async (req, res) => {
       req.body.slug = slugify(req.body.title);
     }
     const newProduct = await Product.create(req.body);
-    res.json(newProduct);
+    res.status(200).json(newProduct);
   } catch (error) {
     throw new Error(error);
   }
@@ -26,7 +26,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     const updateProduct = await Product.findOneAndUpdate({ id }, req.body, {
       new: true,
     });
-    res.json(updateProduct);
+    res.status(200).json(updateProduct);
   } catch (error) {
     throw new Error(error);
   }
@@ -37,7 +37,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const deleteProduct = await Product.findOneAndDelete(id);
-    res.json(deleteProduct);
+    res.status(200).json(deleteProduct);
   } catch (error) {
     throw new Error(error);
   }
@@ -48,7 +48,7 @@ const getaProduct = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const findProduct = await Product.findById(id);
-    res.json(findProduct);
+    res.status(200).json(findProduct);
   } catch (error) {
     throw new Error(error);
   }
@@ -94,7 +94,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
       if (skip >= productCount) throw new Error("This Page does not exists");
     }
     const product = await query;
-    res.json(product);
+    res.status(200).json(product);
   } catch (error) {
     throw new Error(error);
   }
@@ -115,7 +115,7 @@ const addToWishlist = asyncHandler(async (req, res) => {
           new: true,
         }
       );
-      res.json(user);
+      res.status(200).json(user);
     } else {
       let user = await User.findByIdAndUpdate(
         _id,
@@ -126,7 +126,7 @@ const addToWishlist = asyncHandler(async (req, res) => {
           new: true,
         }
       );
-      res.json(user);
+      res.status(200).json(user);
     }
   } catch (error) {
     throw new Error(error);
@@ -183,7 +183,7 @@ const rating = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(finalproduct);
+    res.status(200).json(finalproduct);
   } catch (error) {
     throw new Error(error);
   }

@@ -7,7 +7,7 @@ const fs = require("fs");
 const createBlog = asyncHandler(async (req, res) => {
   try {
     const newBlog = await Blog.create(req.body);
-    res.json(newBlog);
+    res.status(200).json(newBlog);
   } catch (error) {
     throw new Error(error);
   }
@@ -20,7 +20,7 @@ const updateBlog = asyncHandler(async (req, res) => {
     const updateBlog = await Blog.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.json(updateBlog);
+    res.status(200).json(updateBlog);
   } catch (error) {
     throw new Error(error);
   }
@@ -40,7 +40,7 @@ const getBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(getBlog);
+    res.status(200).json(getBlog);
   } catch (error) {
     throw new Error(error);
   }
@@ -48,7 +48,7 @@ const getBlog = asyncHandler(async (req, res) => {
 const getAllBlogs = asyncHandler(async (req, res) => {
   try {
     const getBlogs = await Blog.find();
-    res.json(getBlogs);
+    res.status(200).json(getBlogs);
   } catch (error) {
     throw new Error(error);
   }
@@ -59,7 +59,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const deletedBlog = await Blog.findByIdAndDelete(id);
-    res.json(deletedBlog);
+    res.status(200).json(deletedBlog);
   } catch (error) {
     throw new Error(error);
   }
@@ -87,7 +87,7 @@ const liketheBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(blog);
+    res.status(200).json(blog);
   }
   if (isLiked) {
     const blog = await Blog.findByIdAndUpdate(
@@ -98,7 +98,7 @@ const liketheBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(blog);
+    res.status(200).json(blog);
   } else {
     const blog = await Blog.findByIdAndUpdate(
       blogId,
@@ -108,7 +108,7 @@ const liketheBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(blog);
+    res.status(200).json(blog);
   }
 });
 const disliketheBlog = asyncHandler(async (req, res) => {
@@ -133,7 +133,7 @@ const disliketheBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(blog);
+    res.status(200).json(blog);
   }
   if (isDisLiked) {
     const blog = await Blog.findByIdAndUpdate(
@@ -144,7 +144,7 @@ const disliketheBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(blog);
+    res.status(200).json(blog);
   } else {
     const blog = await Blog.findByIdAndUpdate(
       blogId,
@@ -154,7 +154,7 @@ const disliketheBlog = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(blog);
+    res.status(200).json(blog);
   }
 });
 
@@ -183,7 +183,7 @@ const uploadImages = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    res.json(findBlog);
+    res.status(200).json(findBlog);
   } catch (error) {
     throw new Error(error);
   }

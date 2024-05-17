@@ -30,7 +30,7 @@ const createUser = asyncHandler(async (req, res) => {
      * TODO:if user not found user create a new user
      */
     const newUser = await User.create(req.body);
-    res.json(newUser);
+    res.status(200).json(newUser);
   } else {
     /**
      * TODO:if user found then thow an error: User already exists
@@ -110,7 +110,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
       throw new Error("There is something wrong with refresh token");
     }
     const accessToken = generateToken(user?._id);
-    res.json({ accessToken });
+    res.status(200).json({ accessToken });
   });
 });
 
@@ -157,7 +157,7 @@ const updatedUser = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error) {
     throw new Error(error);
   }
@@ -179,7 +179,7 @@ const saveAddress = asyncHandler(async (req, res, next) => {
         new: true,
       }
     );
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error) {
     throw new Error(error);
   }
@@ -190,7 +190,7 @@ const saveAddress = asyncHandler(async (req, res, next) => {
 const getallUser = asyncHandler(async (req, res) => {
   try {
     const getUsers = await User.find().populate("wishlist");
-    res.json(getUsers);
+    res.status(200).json(getUsers);
   } catch (error) {
     throw new Error(error);
   }
@@ -204,7 +204,7 @@ const getaUser = asyncHandler(async (req, res) => {
 
   try {
     const getaUser = await User.findById(id);
-    res.json({
+    res.status(200).json({
       getaUser,
     });
   } catch (error) {
@@ -220,7 +220,7 @@ const deleteaUser = asyncHandler(async (req, res) => {
 
   try {
     const deleteaUser = await User.findByIdAndDelete(id);
-    res.json({
+    res.status(200).json({
       deleteaUser,
     });
   } catch (error) {
@@ -242,7 +242,7 @@ const blockUser = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    res.json(blockusr);
+    res.status(200).json(blockusr);
   } catch (error) {
     throw new Error(error);
   }
@@ -262,7 +262,7 @@ const unblockUser = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    res.json({
+    res.status(200).json({
       message: "User UnBlocked",
     });
   } catch (error) {
@@ -278,9 +278,9 @@ const updatePassword = asyncHandler(async (req, res) => {
   if (password) {
     user.password = password;
     const updatedPassword = await user.save();
-    res.json(updatedPassword);
+    res.status(200).json(updatedPassword);
   } else {
-    res.json(user);
+    res.status(200).json(user);
   }
 });
 
@@ -299,7 +299,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
       htm: resetURL,
     };
     // sendEmail(data);
-    res.json(token);
+    res.status(200).json(token);
   } catch (error) {
     throw new Error(error);
   }
@@ -318,14 +318,14 @@ const resetPassword = asyncHandler(async (req, res) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-  res.json(user);
+  res.status(200).json(user);
 });
 
 const getWishlist = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   try {
     const findUser = await User.findById(_id).populate("wishlist");
-    res.json(findUser);
+    res.status(200).json(findUser);
   } catch (error) {
     throw new Error(error);
   }
@@ -361,7 +361,7 @@ const userCart = asyncHandler(async (req, res) => {
       cartTotal,
       orderby: user?._id,
     }).save();
-    res.json(newCart);
+    res.status(200).json(newCart);
   } catch (error) {
     throw new Error(error);
   }
@@ -374,7 +374,7 @@ const getUserCart = asyncHandler(async (req, res) => {
     const cart = await Cart.findOne({ orderby: _id }).populate(
       "products.product"
     );
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
     throw new Error(error);
   }
@@ -386,7 +386,7 @@ const emptyCart = asyncHandler(async (req, res) => {
   try {
     const user = await User.findOne({ _id });
     const cart = await Cart.findOneAndRemove({ orderby: user._id });
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
     throw new Error(error);
   }
@@ -413,7 +413,7 @@ const applyCoupon = asyncHandler(async (req, res) => {
     { totalAfterDiscount },
     { new: true }
   );
-  res.json(totalAfterDiscount);
+  res.status(200).json(totalAfterDiscount);
 });
 
 const createOrder = asyncHandler(async (req, res) => {
@@ -453,7 +453,7 @@ const createOrder = asyncHandler(async (req, res) => {
       };
     });
     const updated = await Product.bulkWrite(update, {});
-    res.json({ message: "success" });
+    res.status(200).json({ message: "success" });
   } catch (error) {
     throw new Error(error);
   }
@@ -467,7 +467,7 @@ const getOrders = asyncHandler(async (req, res) => {
       .populate("products.product")
       .populate("orderby")
       .exec();
-    res.json(userorders);
+    res.status(200).json(userorders);
   } catch (error) {
     throw new Error(error);
   }
@@ -479,7 +479,7 @@ const getAllOrders = asyncHandler(async (req, res) => {
       .populate("products.product")
       .populate("orderby")
       .exec();
-    res.json(alluserorders);
+    res.status(200).json(alluserorders);
   } catch (error) {
     throw new Error(error);
   }
@@ -492,7 +492,7 @@ const getOrderByUserId = asyncHandler(async (req, res) => {
       .populate("products.product")
       .populate("orderby")
       .exec();
-    res.json(userorders);
+    res.status(200).json(userorders);
   } catch (error) {
     throw new Error(error);
   }
@@ -512,7 +512,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.json(updateOrderStatus);
+    res.status(200).json(updateOrderStatus);
   } catch (error) {
     throw new Error(error);
   }

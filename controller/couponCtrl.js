@@ -5,7 +5,7 @@ const asynHandler = require("express-async-handler");
 const createCoupon = asynHandler(async (req, res) => {
   try {
     const newCoupon = await Coupon.create(req.body);
-    res.json(newCoupon);
+    res.status(200).json(newCoupon);
   } catch (error) {
     throw new Error(error);
   }
@@ -13,7 +13,7 @@ const createCoupon = asynHandler(async (req, res) => {
 const getAllCoupons = asynHandler(async (req, res) => {
   try {
     const coupons = await Coupon.find();
-    res.json(coupons);
+    res.status(200).json(coupons);
   } catch (error) {
     throw new Error(error);
   }
@@ -25,7 +25,7 @@ const updateCoupon = asynHandler(async (req, res) => {
     const updatecoupon = await Coupon.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.json(updatecoupon);
+    res.status(200).json(updatecoupon);
   } catch (error) {
     throw new Error(error);
   }
@@ -35,7 +35,7 @@ const deleteCoupon = asynHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const deletecoupon = await Coupon.findByIdAndDelete(id);
-    res.json(deletecoupon);
+    res.status(200).json(deletecoupon);
   } catch (error) {
     throw new Error(error);
   }
@@ -45,7 +45,7 @@ const getCoupon = asynHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const getAcoupon = await Coupon.findById(id);
-    res.json(getAcoupon);
+    res.status(200).json(getAcoupon);
   } catch (error) {
     throw new Error(error);
   }
