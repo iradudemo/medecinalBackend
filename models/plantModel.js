@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Declare the Schema of the Mongo model
-var productSchema = new mongoose.Schema(
+var plantSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -26,12 +26,26 @@ var productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    brand: {
+    scientificName: {
       type: String,
     },
-    quantity: {
-      type: Number,
-      required: true,
+    commonName: {
+      type: String,
+    },
+    medicinalUse: {
+      type: String,
+    },
+    partToUse: {
+      type: String,
+    },
+    dosage: {
+      type: String,
+    },
+    preparation: {
+      type: String,
+    },
+    cautions: {
+      type: String,
     },
     sold: {
       type: Number,
@@ -43,7 +57,6 @@ var productSchema = new mongoose.Schema(
         url: String,
       },
     ],
-    color: [],
     tags: String,
     ratings: [
       {
@@ -61,4 +74,4 @@ var productSchema = new mongoose.Schema(
 );
 
 //Export the model
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("Plant", plantSchema);

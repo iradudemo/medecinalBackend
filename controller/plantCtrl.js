@@ -1,60 +1,60 @@
-const Product = require("../models/productModel");
+const Plant = require("../models/plantModel");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const validateMongoDbId = require("../utils/validateMongodbId");
 
-const createProduct = asyncHandler(async (req, res) => {
+const createPlant = asyncHandler(async (req, res) => {
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
-    const newProduct = await Product.create(req.body);
-    res.status(200).json(newProduct);
+    const newPlant = await Plant.create(req.body);
+    res.status(200).json(newPlant);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const updateProduct = asyncHandler(async (req, res) => {
+const updatePlant = asyncHandler(async (req, res) => {
   const id = req.params;
   validateMongoDbId(id);
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
-    const updateProduct = await Product.findOneAndUpdate({ id }, req.body, {
+    const updatePlant = await Plant.findOneAndUpdate({ id }, req.body, {
       new: true,
     });
-    res.status(200).json(updateProduct);
+    res.status(200).json(updatePlant);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const deleteProduct = asyncHandler(async (req, res) => {
+const deletePlant = asyncHandler(async (req, res) => {
   const id = req.params;
   validateMongoDbId(id);
   try {
-    const deleteProduct = await Product.findOneAndDelete(id);
-    res.status(200).json(deleteProduct);
+    const deletePlant = await Plant.findOneAndDelete(id);
+    res.status(200).json(deletePlant);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const getaProduct = asyncHandler(async (req, res) => {
+const getaPlant = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const findProduct = await Product.findById(id);
-    res.status(200).json(findProduct);
+    const findPlant = await Plant.findById(id);
+    res.status(200).json(findPlant);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const getAllProduct = asyncHandler(async (req, res) => {
+const getAllPlants = asyncHandler(async (req, res) => {
   try {
     // Filtering
     const queryObj = { ...req.query };
@@ -63,7 +63,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    let query = Product.find(JSON.parse(queryStr));
+    let query = Plant.find(JSON.parse(queryStr));
 
     // Sorting
 
@@ -90,11 +90,11 @@ const getAllProduct = asyncHandler(async (req, res) => {
     const skip = (page - 1) * limit;
     query = query.skip(skip).limit(limit);
     if (req.query.page) {
-      const productCount = await Product.countDocuments();
-      if (skip >= productCount) throw new Error("This Page does not exists");
+      const plantCount = await Plant.countDocuments();
+      if (skip >= plantCount) throw new Error("This Page does not exists");
     }
-    const product = await query;
-    res.status(200).json(product);
+    const plant = await query;
+    res.status(200).json(plant);
   } catch (error) {
     throw new Error(error);
   }
@@ -137,12 +137,12 @@ const rating = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { star, prodId, comment } = req.body;
   try {
-    const product = await Product.findById(prodId);
-    let alreadyRated = product.ratings.find(
+    const plant = await Plant.findById(prodId);
+    let alreadyRated = plant.ratings.find(
       (userId) => userId.postedby.toString() === _id.toString()
     );
     if (alreadyRated) {
-      const updateRating = await Product.updateOne(
+      const updateRating = await Plant.updateOne(
         {
           ratings: { $elemMatch: alreadyRated },
         },
@@ -154,7 +154,7 @@ const rating = asyncHandler(async (req, res) => {
         }
       );
     } else {
-      const rateProduct = await Product.findByIdAndUpdate(
+      const ratePlant = await Plant.findByIdAndUpdate(
         prodId,
         {
           $push: {
@@ -170,31 +170,31 @@ const rating = asyncHandler(async (req, res) => {
         }
       );
     }
-    const getallratings = await Product.findById(prodId);
+    const getallratings = await Plant.findById(prodId);
     let totalRating = getallratings.ratings.length;
     let ratingsum = getallratings.ratings
       .map((item) => item.star)
       .reduce((prev, curr) => prev + curr, 0);
     let actualRating = Math.round(ratingsum / totalRating);
-    let finalproduct = await Product.findByIdAndUpdate(
+    let finalPlant = await Plant.findByIdAndUpdate(
       prodId,
       {
         totalrating: actualRating,
       },
       { new: true }
     );
-    res.status(200).json(finalproduct);
+    res.status(200).json(finalPlant);
   } catch (error) {
     throw new Error(error);
   }
 });
 
 module.exports = {
-  createProduct,
-  getaProduct,
-  getAllProduct,
-  updateProduct,
-  deleteProduct,
+  createPlant,
+  getaPlant,
+  getAllPlants,
+  updatePlant,
+  deletePlant,
   addToWishlist,
   rating,
 };

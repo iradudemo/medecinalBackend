@@ -14,13 +14,16 @@ var userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
       unique: true,
     },
-    mobile: {
+    phone: {
       type: String,
-      required: true,
       unique: true,
+      required: [true, "Provide Phone"],
+      match: [
+        /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
+        "provide valid Phone number",
+      ],
     },
     password: {
       type: String,

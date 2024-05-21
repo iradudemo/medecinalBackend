@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-const Product = require("../models/productModel");
+const Plant = require("../models/plantModel");
 const Cart = require("../models/cartModel");
 const Coupon = require("../models/couponModel");
 const Order = require("../models/orderModel");
@@ -348,7 +348,7 @@ const userCart = asyncHandler(async (req, res) => {
       object.product = cart[i]._id;
       object.count = cart[i].count;
       object.color = cart[i].color;
-      let getPrice = await Product.findById(cart[i]._id).select("price").exec();
+      let getPrice = await Plant.findById(cart[i]._id).select("price").exec();
       object.price = getPrice.price;
       products.push(object);
     }
@@ -452,7 +452,7 @@ const createOrder = asyncHandler(async (req, res) => {
         },
       };
     });
-    const updated = await Product.bulkWrite(update, {});
+    const updated = await Plant.bulkWrite(update, {});
     res.status(200).json({ message: "success" });
   } catch (error) {
     throw new Error(error);
