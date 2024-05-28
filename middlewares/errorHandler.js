@@ -1,5 +1,7 @@
 // not Found
 
+const ErrorResponse = require("../utils/errorResponse");
+
 const notFound = (req, res, next) => {
   const error = new Error(`Not Found : ${req.originalUrl}`);
   res.status(404);
@@ -11,7 +13,7 @@ const notFound = (req, res, next) => {
 const errorHandler = (error, req, res, next) => {
   let err = { ...error };
   err.message = error.message;
-  console.log(error);
+
   if (error.name === "CastError") {
     const message = `Oops! Nothing related with ${error.value}.`;
     err = new ErrorResponse(message, 404);

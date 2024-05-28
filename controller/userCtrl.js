@@ -11,11 +11,11 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const { generateRefreshToken } = require("../config/refreshtoken");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-// const sendEmail = require("./emailCtrl");
+const sendEmail = require("./emailCtrl");
 
 // Create a User ----------------------------------------------
 
-const createUser = asyncHandler(async (req, res) => {
+const createUser = asyncHandler(async (req, res, next) => {
   /**
    * TODO:Get the email from req.body
    */
@@ -30,7 +30,7 @@ const createUser = asyncHandler(async (req, res) => {
      * TODO:if user not found user create a new user
      */
     const newUser = await User.create(req.body);
-    res.status(200).json(newUser);
+    res.status(201).json(newUser);
   } else {
     /**
      * TODO:if user found then thow an error: User already exists
@@ -69,11 +69,12 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
 
 // admin login
 
-const loginAdmin = asyncHandler(async (req, res) => {
+const loginAdmin = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   // check if user exists or not
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin") throw new Error("Not Authorised");
+  if (findAdmin.role !== "admin" || findAdmin.role !== "user")
+    throw new Error("Not Authorised");
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findAdmin?._id);
     const updateuser = await User.findByIdAndUpdate(
@@ -118,6 +119,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
+
   if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
   const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
@@ -151,7 +153,7 @@ const updatedUser = asyncHandler(async (req, res) => {
         firstname: req?.body?.firstname,
         lastname: req?.body?.lastname,
         email: req?.body?.email,
-        mobile: req?.body?.mobile,
+        phone: req?.body?.phone,
       },
       {
         new: true,
@@ -298,7 +300,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
       subject: "Forgot Password Link",
       htm: resetURL,
     };
-    // sendEmail(data);
+    sendEmail(data);
     res.status(200).json(token);
   } catch (error) {
     throw new Error(error);

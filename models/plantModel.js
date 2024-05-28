@@ -25,6 +25,8 @@ var plantSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: "PCategory",
     },
     scientificName: {
       type: String,
