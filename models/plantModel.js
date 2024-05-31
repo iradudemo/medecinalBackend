@@ -30,21 +30,74 @@ var plantSchema = new mongoose.Schema(
     },
     scientificName: {
       type: String,
+      required: true,
     },
     commonName: {
       type: String,
+      required: true,
     },
     medicinalUse: {
-      type: String,
+      type: [String],
+      required: true,
     },
     partToUse: {
-      type: String,
+      type: [String],
+      required: true,
     },
-    dosage: {
-      type: String,
+    howToUse: {
+      type: [String],
     },
-    preparation: {
-      type: String,
+    dosages: {
+      adults: {
+        type: String,
+      },
+      children: {
+        aged10to15: {
+          type: String,
+          // required: true,
+        },
+        aged6to9: {
+          type: String,
+          // required: true,
+        },
+        aged2to5: {
+          type: String,
+          // required: true,
+        },
+        aged1to2: {
+          type: String,
+          // required: true,
+        },
+        below1year: {
+          type: String,
+          // required: true,
+        },
+      },
+    },
+    measurements: {
+      tablespoon: {
+        type: String,
+        // required: true,
+      },
+      dessertspoon: {
+        type: String,
+        // required: true,
+      },
+      teaspoon: {
+        type: String,
+        default: "",
+        // required: true,
+      },
+      cup: {
+        type: String,
+        default: "",
+        // required: true,
+      },
+      litre: {
+        type: String,
+        default: "",
+        // required: true,
+      },
     },
     cautions: {
       type: String,
