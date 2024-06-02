@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 // Declare the Schema of the Mongo model
 var orderSchema = new mongoose.Schema(
   {
-    products: [
+    plants: [
       {
-        product: {
+        plant: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "Plant",
         },
         count: Number,
         color: String,

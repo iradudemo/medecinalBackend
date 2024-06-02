@@ -102,6 +102,9 @@ var plantSchema = new mongoose.Schema(
     cautions: {
       type: String,
     },
+    precautions: {
+      type: [String],
+    },
     sold: {
       type: Number,
       default: 0,
