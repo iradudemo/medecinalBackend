@@ -40,6 +40,9 @@ var plantSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+    sideEffect: {
+      type: [String],
+    },
     partToUse: {
       type: [String],
       required: true,
@@ -49,58 +52,20 @@ var plantSchema = new mongoose.Schema(
     },
     dosages: {
       adults: {
-        type: String,
+        type: [String],
       },
       children: {
-        aged10to15: {
-          type: String,
-          // required: true,
-        },
-        aged6to9: {
-          type: String,
-          // required: true,
-        },
-        aged2to5: {
-          type: String,
-          // required: true,
-        },
-        aged1to2: {
-          type: String,
-          // required: true,
-        },
-        below1year: {
-          type: String,
-          // required: true,
-        },
+        type: [String],
+      },
+      all: {
+        type: [String],
       },
     },
     measurements: {
-      tablespoon: {
-        type: String,
-        // required: true,
-      },
-      dessertspoon: {
-        type: String,
-        // required: true,
-      },
-      teaspoon: {
-        type: String,
-        default: "",
-        // required: true,
-      },
-      cup: {
-        type: String,
-        default: "",
-        // required: true,
-      },
-      litre: {
-        type: String,
-        default: "",
-        // required: true,
-      },
+      type: [String],
     },
     cautions: {
-      type: String,
+      type: [String],
     },
     precautions: {
       type: [String],
