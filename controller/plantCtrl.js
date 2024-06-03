@@ -34,11 +34,16 @@ const updatePlant = asyncHandler(async (req, res) => {
 });
 
 const deletePlant = asyncHandler(async (req, res) => {
-  const id = req.params;
+  const id = req.params.id;
   validateMongoDbId(id);
   try {
-    const deletePlant = await Plant.findOneAndDelete(id);
-    res.status(200).json(deletePlant);
+    const deletePlant = await Plant.findOneAndDelete({ _id: id });
+    if (!deletePlant) {
+      return res.status(404).json({ message: "Plant not found" }); // Handle the case where the plant is not found
+    }
+    res
+      .status(200)
+      .json({ message: "Plant deleted successfully", deletePlant });
   } catch (error) {
     throw new Error(error);
   }
