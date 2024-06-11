@@ -89,6 +89,52 @@ const getAllPlants = asyncHandler(async (req, res) => {
       query = query.select("-__v");
     }
 
+    // Search
+    // if (req.query.search) {
+    //   const searchFields = [
+    //     "title",
+    //     "description",
+    //     "medicinalUse",
+    //     "scientificName",
+    //     "commonName",
+    //     "sideEffect",
+    //     "category",
+    //   ]; // fields to search against
+    //   const searchQuery = {
+    //     $or: searchFields.map((field) => ({
+    //       [field]: { $regex: req.query.search, $options: "i" },
+    //     })),
+    //   };
+    //   query = query.find(searchQuery);
+    // }
+    // Search by starting letter in title
+    if (req.query.search) {
+      const searchQuery = {
+        title: { $regex: `^${req.query.search}`, $options: "i" },
+      };
+      query = query.find(searchQuery);
+    }
+
+    // General search term across multiple fields
+    if (req.query.searchTerm) {
+      const searchFields = [
+        "title",
+        "description",
+        "medicinalUse",
+        "scientificName",
+        "commonName",
+        "sideEffect",
+        "category",
+      ];
+      const searchTerm = req.query.searchTerm;
+      const searchQuery = {
+        $or: searchFields.map((field) => ({
+          [field]: { $regex: searchTerm, $options: "i" },
+        })),
+      };
+      query = query.find(searchQuery);
+    }
+
     // pagination
 
     const page = req.query.page;
@@ -105,6 +151,7 @@ const getAllPlants = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const addToWishlist = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { prodId } = req.body;
@@ -189,7 +236,9 @@ const rating = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).json(finalPlant);
+    res
+      .status(200)
+      .json({ data: finalPlant, message: "Rating added successfully" });
   } catch (error) {
     throw new Error(error);
   }

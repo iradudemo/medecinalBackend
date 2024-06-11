@@ -165,6 +165,30 @@ const updatedUser = asyncHandler(async (req, res) => {
   }
 });
 
+const updatedUserRole = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body;
+  validateMongoDbId(id);
+  console.log("ID", id);
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        role,
+      },
+      {
+        new: true,
+      }
+    );
+    res
+      .status(200)
+      .json({ data: updatedUser, message: "User updated successfully" });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // save user Address
 
 const saveAddress = asyncHandler(async (req, res, next) => {
@@ -543,4 +567,5 @@ module.exports = {
   updateOrderStatus,
   getAllOrders,
   getOrderByUserId,
+  updatedUserRole,
 };

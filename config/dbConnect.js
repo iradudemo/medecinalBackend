@@ -1,8 +1,12 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const dbConnect = () => {
   try {
-    const conn = mongoose.connect(process.env.MONGODB_URL);
+    mongoose.set("strictQuery", true);
+    const conn = mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
     console.log("Database Connected Successfully");
   } catch (error) {
