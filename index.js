@@ -20,7 +20,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const corsOptions = {
-  origin: /\.onrender\.com$/,
+  origin: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
 
