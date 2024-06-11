@@ -19,10 +19,14 @@ const payments = require("./routes/payment");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+const corsOptions = {
+  origin: /\.onrender\.com$/,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
 
 dbConnect();
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
