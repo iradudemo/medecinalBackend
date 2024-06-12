@@ -19,14 +19,16 @@ const payments = require("./routes/payment");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-const corsOptions = {
-  origin: true,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-};
 
 dbConnect();
 app.use(morgan("dev"));
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -40,7 +42,6 @@ app.use("/api/coupon", couponRouter);
 app.use("/api/color", colorRouter);
 app.use("/api/enquiry", enqRouter);
 app.use("/api/payment", payments);
-// app.use("/api/upload", uploadRouter);
 
 app.use(notFound);
 app.use(errorHandler);
