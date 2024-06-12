@@ -46,7 +46,7 @@ const processPayment = async (req, res) => {
         },
       }
     );
-    console.log("PAYAYA", response.data);
+
     payment.status = response.data.status;
     payment.ref = response.data.ref;
     payment.transactionId =
